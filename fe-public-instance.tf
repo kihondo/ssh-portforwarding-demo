@@ -72,8 +72,9 @@ yum install -y \
     tree \
     vim \
     nc \
-    nginx \
     traceroute
+
+amazon-linux-extras install nginx1
 
 echo "Bastion host setup completed successfully!"
 echo "Available commands: netcheck, testports, connectprivate"
