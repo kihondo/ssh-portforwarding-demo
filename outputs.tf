@@ -51,10 +51,14 @@ output "ssh_connection_examples" {
        ssh -i ssh-privatekey.pem ec2-user@<bastion-host-ip>
        ssh -J ec2-user@<bastion-host-ip> ubuntu@<internal-server-ip>
 
-    4. Local Port Forwarding (access internal web service on your local port 9090):
-       ssh -L 9090:<internal-server-ip>:8080 ec2-user@<bastion-host-ip>
-       Then access: http://localhost:9090
-       
+    4. Local Port Forwarding (access internal web service on your local port 80):
+       ssh -L 9999:<internal-server-ip>:80 ec2-user@<bastion-host-ip>
+       Then access: http://localhost:9999
+
+    5. Local Port Forwarding (access internal web service on your local port 9000):
+       ssh -L 9000:<internal-server-ip>:8080 ec2-user@<bastion-host-ip>
+       Then access: http://localhost:9000
+
     =================================================================
   EOT
 }
