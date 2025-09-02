@@ -137,19 +137,19 @@ resource "aws_vpc_security_group_ingress_rule" "internal_ssh_ingress" {
   }
 }
 
-# resource "aws_vpc_security_group_ingress_rule" "internal_http_ingress" {
-#   security_group_id = aws_security_group.internal_server_sg.id
-#   description       = "HTTP access from bastion"
+resource "aws_vpc_security_group_ingress_rule" "internal_http_ingress" {
+  security_group_id = aws_security_group.internal_server_sg.id
+  description       = "HTTP access from bastion"
 
-#   referenced_security_group_id = aws_security_group.bastion_sg.id
-#   from_port                    = 80
-#   to_port                      = 80
-#   ip_protocol                  = "tcp"
+  referenced_security_group_id = aws_security_group.bastion_sg.id
+  from_port                    = 80
+  to_port                      = 80
+  ip_protocol                  = "tcp"
 
-#   tags = {
-#     Name = "internal-http-ingress"
-#   }
-# }
+  tags = {
+    Name = "internal-http-ingress"
+  }
+}
 
 # Internal Server Egress Rules
 resource "aws_vpc_security_group_egress_rule" "internal_https_egress" {
