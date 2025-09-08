@@ -9,6 +9,7 @@ data "aws_availability_zones" "available" {
 resource "aws_vpc" "frontend_vpc" {
 
   cidr_block           = var.frontend_vpc_address_space
+  enable_dns_support   = true
   enable_dns_hostnames = true
 
   tags = {
@@ -147,11 +148,6 @@ resource "aws_nat_gateway" "frontend_ngw" {
 resource "aws_route_table" "frontend_private_rtb01" {
   vpc_id = aws_vpc.frontend_vpc.id
 
-    route {
-      cidr_block     = "0.0.0.0/0"
-      nat_gateway_id = aws_nat_gateway.frontend_ngw.id
-    }
-
   tags = {
     Name = "${var.frontend_prefix}-private-rtb01"
   }
@@ -162,13 +158,14 @@ resource "aws_route_table_association" "frontend_private_subnet01_association" {
   route_table_id = aws_route_table.frontend_private_rtb01.id
 }
 
+resource "aws_route" "route_for_private_rtb01" {
+  route_table_id         = aws_route_table.frontend_private_rtb01.id
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id         = aws_nat_gateway.frontend_ngw.id
+}
+
 # resource "aws_route_table" "frontend_private_rtb02" {
 #   vpc_id = aws_vpc.frontend_vpc.id
-
-#   #   route {
-#   #     cidr_block = "0.0.0.0/0"
-#   #     gateway_id = aws_nat_gateway.frontend_ngw.id
-#   #   }
 
 #   tags = {
 #     Name = "${var.frontend_prefix}-private-rtb02"
@@ -180,13 +177,14 @@ resource "aws_route_table_association" "frontend_private_subnet01_association" {
 #   route_table_id = aws_route_table.frontend_private_rtb02.id
 # }
 
+# resource "aws_route" "route_for_private_rtb02" {
+#   route_table_id         = aws_route_table.frontend_private_rtb02.id
+#   destination_cidr_block = "0.0.0.0/0"
+#   nat_gateway_id         = aws_nat_gateway.frontend_ngw.id
+# }
+
 # resource "aws_route_table" "frontend_private_rtb03" {
 #   vpc_id = aws_vpc.frontend_vpc.id
-
-#   #   route {
-#   #     cidr_block = "0.0.0.0/0"
-#   #     gateway_id = aws_nat_gateway.frontend_ngw.id
-#   #   }
 
 #   tags = {
 #     Name = "${var.frontend_prefix}-private-rtb03"
@@ -196,4 +194,10 @@ resource "aws_route_table_association" "frontend_private_subnet01_association" {
 # resource "aws_route_table_association" "frontend_private_subnet03_association" {
 #   subnet_id      = aws_subnet.frontend_private_subnet03.id
 #   route_table_id = aws_route_table.frontend_private_rtb03.id
+# }
+
+# resource "aws_route" "route_for_private_rtb03" {
+#   route_table_id         = aws_route_table.frontend_private_rtb03.id
+#   destination_cidr_block = "0.0.0.0/0"
+#   nat_gateway_id         = aws_nat_gateway.frontend_ngw.id
 # }
